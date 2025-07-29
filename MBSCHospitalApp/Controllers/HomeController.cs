@@ -1,31 +1,36 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MBSCHospitalApp.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace MBSCHospitalApp.Controllers;
-
-public class HomeController : Controller
+namespace MBSCHospitalApp.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public class HomeController : Controller
     {
-        _logger = logger;
-    }
+        private readonly AppDbContext _context;
 
-    public IActionResult Index()
-    {
-        return View();
-    }
+        public HomeController(AppDbContext context)
+        {
+            _context = context;
+        }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+        public IActionResult Index()
+        {
+            var users = _context.Users.ToList();
+            return View(users);
+        }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        [HttpPost]
+        public IActionResult SelectUser(int userId)
+        {
+            var user = _context.Users.Find(userId);
+
+            if (user == null)
+                return RedirectToAction("Index");
+
+            if (user.IsAdmin)
+                return RedirectToAction("AdminDashboard", "Admin");
+            else
+                return RedirectToAction("DoctorList", "Patient");
+        }
     }
 }

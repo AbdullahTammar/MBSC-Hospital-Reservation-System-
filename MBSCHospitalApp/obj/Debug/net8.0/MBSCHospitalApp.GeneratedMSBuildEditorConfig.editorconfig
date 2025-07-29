@@ -26,12 +26,20 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = /Users/abdullahtamar/MBSC-Hospital-Reservation-System/MBSCHospitalApp
 build_property._RazorSourceGeneratorDebug = 
 
+[/Users/abdullahtamar/MBSC-Hospital-Reservation-System/MBSCHospitalApp/Views/Admin/AdminDashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQWRtaW5EYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/abdullahtamar/MBSC-Hospital-Reservation-System/MBSCHospitalApp/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/abdullahtamar/MBSC-Hospital-Reservation-System/MBSCHospitalApp/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abdullahtamar/MBSC-Hospital-Reservation-System/MBSCHospitalApp/Views/Patient/DoctorList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGF0aWVudC9Eb2N0b3JMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/abdullahtamar/MBSC-Hospital-Reservation-System/MBSCHospitalApp/Views/Shared/Error.cshtml]
