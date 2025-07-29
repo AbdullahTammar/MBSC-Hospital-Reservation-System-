@@ -41,6 +41,23 @@ using (var scope = app.Services.CreateScope())
         );
         context.SaveChanges();
     }
+
+    if (!context.Doctors.Any())
+    {
+    var doctor1 = new MBSCHospitalApp.Models.Entities.Doctor { Name = "Dr. Rami", Specialty = "Cardiology" };
+    var doctor2 = new MBSCHospitalApp.Models.Entities.Doctor { Name = "Dr. Khaled", Specialty = "Dermatology" };
+
+    context.Doctors.AddRange(doctor1, doctor2);
+    context.SaveChanges();
+
+    context.Appointments.AddRange(
+        new MBSCHospitalApp.Models.Entities.Appointment { DoctorId = doctor1.Id, AppointmentTime = "10:00 AM" },
+        new MBSCHospitalApp.Models.Entities.Appointment { DoctorId = doctor1.Id, AppointmentTime = "11:00 AM" },
+        new MBSCHospitalApp.Models.Entities.Appointment { DoctorId = doctor2.Id, AppointmentTime = "2:00 PM" }
+    );
+    context.SaveChanges();
+    }
+
 }
 
 app.Run();

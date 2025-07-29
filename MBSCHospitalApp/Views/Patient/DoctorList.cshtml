@@ -1,1 +1,24 @@
-<h2>Doctor List (for Patients)</h2>
+@model List<MBSCHospitalApp.Models.Entities.Doctor>
+
+<h2>Doctors and Available Appointments</h2>
+
+@foreach (var doctor in Model)
+{
+    <h3>@doctor.Name (@doctor.Specialty)</h3>
+    <ul>
+        @foreach (var appointment in doctor.Appointments)
+        {
+            if (appointment.UserId == null)
+            {
+                <li>
+                    @appointment.AppointmentTime
+                    <form asp-action="ReserveAppointment" method="post" style="display:inline">
+                        <input type="hidden" name="appointmentId" value="@appointment.Id" />
+                        <input type="hidden" name="userId" value="2" />
+                        <button type="submit" class="btn btn-sm btn-primary">Reserve</button>
+                    </form>
+                </li>
+            }
+        }
+    </ul>
+}
