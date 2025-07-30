@@ -1,13 +1,25 @@
 ﻿@model List<MBSCHospitalApp.Models.Entities.User>
 
-<h2>Select User</h2>
+<div class="d-flex flex-column justify-content-center align-items-center vh-100">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">MBSC Hospital Reservation System</h2>
+        <p class="text-muted">Welcome</p>
+    </div>
 
-<form asp-action="SelectUser" method="post">
-    <select name="userId" class="form-control">
-    @foreach (var user in Model)
-    {
-        <option value="@user.Id">@user.UserName @(user.IsAdmin ? "(Admin)" : "(Patient)")</option>
-    }
-    </select>
-    <button type="submit" class="btn btn-primary mt-2">Continue</button>
-</form>
+    <div class="card shadow-lg p-4" style="min-width: 350px;">
+        <h3 class="text-center mb-4">Login</h3>
+        <form asp-action="SelectUser" method="post">
+            <div class="form-group mb-3">
+                <label for="userId" class="form-label">Select User</label>
+                <select name="userId" id="userId" class="form-select" required>
+                    <option value="">-- Choose User --</option>
+                    @foreach (var user in Model)
+                    {
+                        <option value="@user.Id">@user.UserName</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+    </div>
+</div>

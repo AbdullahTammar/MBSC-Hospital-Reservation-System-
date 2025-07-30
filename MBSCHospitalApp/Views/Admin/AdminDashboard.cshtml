@@ -6,19 +6,31 @@
 {
     <h3>@doctor.Name (@doctor.Specialty)</h3>
 
-    <form asp-action="AddAppointment" method="post">
+    <form asp-action="AddAppointment" method="post" class="mb-3">
         <input type="hidden" name="doctorId" value="@doctor.Id" />
-        <input type="text" name="appointmentTime" placeholder="Enter appointment time" />
-        <button type="submit" class="btn btn-sm btn-success">Add Appointment</button>
+        <input type="datetime-local" name="appointmentTime" class="form-control mb-2" required />
+        <button type="submit" class="btn btn-success">Add Appointment</button>
     </form>
 
-    <ul>
-        @foreach (var appointment in doctor.Appointments)
-        {
-            <li>
-                @appointment.AppointmentTime
-                @(appointment.UserId == null ? "Available" : "Reserved by User " + appointment.UserId)
-            </li>
-        }
-    </ul>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Appointment Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var appointment in doctor.Appointments)
+            {
+                <tr>
+                    <td>@appointment.AppointmentTime</td>
+                    <td>
+                        @(appointment.UserId == null 
+                            ? "Available" 
+                            : "Reserved by " + (appointment.User != null ? appointment.User.UserName : "Unknown User"))
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }

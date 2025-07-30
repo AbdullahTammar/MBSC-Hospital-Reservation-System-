@@ -13,6 +13,9 @@ builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -26,12 +29,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 
 using (var scope = app.Services.CreateScope())
 {
@@ -49,20 +52,19 @@ using (var scope = app.Services.CreateScope())
 
     if (!context.Doctors.Any())
     {
-    var doctor1 = new MBSCHospitalApp.Models.Entities.Doctor { Name = "Dr. Rami", Specialty = "Cardiology" };
-    var doctor2 = new MBSCHospitalApp.Models.Entities.Doctor { Name = "Dr. Khaled", Specialty = "Dermatology" };
+        var doctor1 = new MBSCHospitalApp.Models.Entities.Doctor { Name = "Dr. Rami", Specialty = "Cardiology" };
+        var doctor2 = new MBSCHospitalApp.Models.Entities.Doctor { Name = "Dr. Khaled", Specialty = "Dermatology" };
 
-    context.Doctors.AddRange(doctor1, doctor2);
-    context.SaveChanges();
+        context.Doctors.AddRange(doctor1, doctor2);
+        context.SaveChanges();
 
-    context.Appointments.AddRange(
-        new MBSCHospitalApp.Models.Entities.Appointment { DoctorId = doctor1.Id, AppointmentTime = "10:00 AM" },
-        new MBSCHospitalApp.Models.Entities.Appointment { DoctorId = doctor1.Id, AppointmentTime = "11:00 AM" },
-        new MBSCHospitalApp.Models.Entities.Appointment { DoctorId = doctor2.Id, AppointmentTime = "2:00 PM" }
-    );
-    context.SaveChanges();
+        context.Appointments.AddRange(
+            new MBSCHospitalApp.Models.Entities.Appointment { DoctorId = doctor1.Id, AppointmentTime = "10:00 AM" },
+            new MBSCHospitalApp.Models.Entities.Appointment { DoctorId = doctor1.Id, AppointmentTime = "11:00 AM" },
+            new MBSCHospitalApp.Models.Entities.Appointment { DoctorId = doctor2.Id, AppointmentTime = "2:00 PM" }
+        );
+        context.SaveChanges();
     }
-
 }
 
 app.Run();

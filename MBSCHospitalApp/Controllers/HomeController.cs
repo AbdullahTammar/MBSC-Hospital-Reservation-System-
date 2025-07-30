@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MBSCHospitalApp.Models.Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace MBSCHospitalApp.Controllers
 {
@@ -25,6 +26,8 @@ namespace MBSCHospitalApp.Controllers
 
             if (user == null)
                 return RedirectToAction("Index");
+
+            HttpContext.Session.SetInt32("CurrentUserId", user.Id);
 
             if (user.IsAdmin)
                 return RedirectToAction("AdminDashboard", "Admin");

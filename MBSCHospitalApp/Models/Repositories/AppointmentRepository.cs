@@ -14,12 +14,18 @@ namespace MBSCHospitalApp.Models.Repositories
 
         public IEnumerable<Appointment> GetAllAppointments()
         {
-            return _context.Appointments.Include(a => a.Doctor).Include(a => a.User).ToList();
+            return _context.Appointments
+                .Include(a => a.Doctor)
+                .Include(a => a.User)
+                .ToList();
         }
 
-        public Appointment? GetAppointmentById(int id)
+        public Appointment GetAppointmentById(int id)
         {
-            return _context.Appointments.Include(a => a.Doctor).Include(a => a.User).FirstOrDefault(a => a.Id == id);
+            return _context.Appointments
+                .Include(a => a.Doctor)
+                .Include(a => a.User)
+                .FirstOrDefault(a => a.Id == id);
         }
 
         public void AddAppointment(Appointment appointment)

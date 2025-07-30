@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MBSCHospitalApp.Models.Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace MBSCHospitalApp.Controllers
 {
@@ -21,9 +22,13 @@ namespace MBSCHospitalApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult ReserveAppointment(int appointmentId, int userId)
+        public IActionResult ReserveAppointment(int appointmentId)
         {
-            _appointmentRepo.ReserveAppointment(appointmentId, userId);
+            var currentUserId = HttpContext.Session.GetInt32("CurrentUserId");
+            if (currentUserId.HasValue)
+            {
+                _appointmentRepo.ReserveAppointment(appointmentId, currentUserId.Value);
+            }
             return RedirectToAction("DoctorList");
         }
     }

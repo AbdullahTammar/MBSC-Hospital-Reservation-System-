@@ -1,24 +1,49 @@
 @model List<MBSCHospitalApp.Models.Entities.Doctor>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var currentUserId = HttpContextAccessor.HttpContext.Session.GetInt32("CurrentUserId") ?? 0;
+}
 
 <h2>Doctors and Available Appointments</h2>
 
-@foreach (var doctor in Model)
-{
-    <h3>@doctor.Name (@doctor.Specialty)</h3>
-    <ul>
-        @foreach (var appointment in doctor.Appointments)
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Doctor</th>
+            <th>Specialty</th>
+            <th>Appointment Time</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var doctor in Model)
         {
-            if (appointment.UserId == null)
+            foreach (var appointment in doctor.Appointments)
             {
-                <li>
-                    @appointment.AppointmentTime
-                    <form asp-action="ReserveAppointment" method="post" style="display:inline">
-                        <input type="hidden" name="appointmentId" value="@appointment.Id" />
-                        <input type="hidden" name="userId" value="2" />
-                        <button type="submit" class="btn btn-sm btn-primary">Reserve</button>
-                    </form>
-                </li>
+                if (appointment.UserId == null || appointment.UserId == currentUserId)
+                {
+                    <tr>
+                        <td>@doctor.Name</td>
+                        <td>@doctor.Specialty</td>
+                        <td>@appointment.AppointmentTime</td>
+                        <td>
+                            @if (appointment.UserId == null)
+                            {
+                                <form asp-action="ReserveAppointment" method="post" style="display:inline">
+                                    <input type="hidden" name="appointmentId" value="@appointment.Id" />
+                                    <button type="submit" class="btn btn-primary btn-sm">Reserve</button>
+                                </form>
+                            }
+                            else if (appointment.UserId == currentUserId)
+                            {
+                                <span class="badge bg-success">Reserved by You</span>
+                            }
+                        </td>
+                    </tr>
+                }
             }
         }
-    </ul>
-}
+    </tbody>
+</table>
