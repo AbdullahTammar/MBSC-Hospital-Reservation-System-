@@ -1,40 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
-using MBSCHospitalApp.Models;
-using Microsoft.EntityFrameworkCore;
+using MBSCHospitalApp.Models.Repositories;
 
 namespace MBSCHospitalApp.Controllers
 {
     public class PatientController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IDoctorRepository _doctorRepo;
+        private readonly IAppointmentRepository _appointmentRepo;
 
-        public PatientController(AppDbContext context)
+        public PatientController(IDoctorRepository doctorRepo, IAppointmentRepository appointmentRepo)
         {
-            _context = context;
+            _doctorRepo = doctorRepo;
+            _appointmentRepo = appointmentRepo;
         }
 
         public IActionResult DoctorList()
         {
-            var doctors = _context.Doctors
-                .Include(d => d.Appointments)
-                .ToList();
-
+            var doctors = _doctorRepo.GetAllDoctors();
             return View(doctors);
         }
 
         [HttpPost]
         public IActionResult ReserveAppointment(int appointmentId, int userId)
         {
-            var appointment = _context.Appointments.Find(appointmentId);
-
-            if (appointment == null || appointment.UserId != null)
-            {
-                return RedirectToAction("DoctorList");
-            }
-
-            appointment.UserId = userId;
-            _context.SaveChanges();
-
+            _appointmentRepo.ReserveAppointment(appointmentId, userId);
             return RedirectToAction("DoctorList");
         }
     }

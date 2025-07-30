@@ -1,5 +1,6 @@
 using MBSCHospitalApp.Models;
 using Microsoft.EntityFrameworkCore;
+using MBSCHospitalApp.Models.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=app.db"));
+
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 
 var app = builder.Build();
 

@@ -1,24 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
-using MBSCHospitalApp.Models;
-using Microsoft.EntityFrameworkCore;
+using MBSCHospitalApp.Models.Repositories;
 
 namespace MBSCHospitalApp.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IDoctorRepository _doctorRepo;
+        private readonly IAppointmentRepository _appointmentRepo;
 
-        public AdminController(AppDbContext context)
+        public AdminController(IDoctorRepository doctorRepo, IAppointmentRepository appointmentRepo)
         {
-            _context = context;
+            _doctorRepo = doctorRepo;
+            _appointmentRepo = appointmentRepo;
         }
 
         public IActionResult AdminDashboard()
         {
-            var doctors = _context.Doctors
-                .Include(d => d.Appointments)
-                .ToList();
-
+            var doctors = _doctorRepo.GetAllDoctors();
             return View(doctors);
         }
 
@@ -31,9 +29,7 @@ namespace MBSCHospitalApp.Controllers
                 AppointmentTime = appointmentTime
             };
 
-            _context.Appointments.Add(appointment);
-            _context.SaveChanges();
-
+            _appointmentRepo.AddAppointment(appointment);
             return RedirectToAction("AdminDashboard");
         }
     }

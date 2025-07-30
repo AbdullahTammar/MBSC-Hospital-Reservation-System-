@@ -1,28 +1,27 @@
 using Microsoft.AspNetCore.Mvc;
-using MBSCHospitalApp.Models;
-using Microsoft.EntityFrameworkCore;
+using MBSCHospitalApp.Models.Repositories;
 
 namespace MBSCHospitalApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IUserRepository _userRepo;
 
-        public HomeController(AppDbContext context)
+        public HomeController(IUserRepository userRepo)
         {
-            _context = context;
+            _userRepo = userRepo;
         }
 
         public IActionResult Index()
         {
-            var users = _context.Users.ToList();
+            var users = _userRepo.GetAllUsers();
             return View(users);
         }
 
         [HttpPost]
         public IActionResult SelectUser(int userId)
         {
-            var user = _context.Users.Find(userId);
+            var user = _userRepo.GetUserById(userId);
 
             if (user == null)
                 return RedirectToAction("Index");
